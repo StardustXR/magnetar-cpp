@@ -48,7 +48,7 @@ void Workspaces::update(double delta) {
 
 		if(xInteract.hasActiveChanged()) {
 			if(xInteract.isActive()) {
-				startYPos = refPos.y - getOrigin().y;
+				startYPos = refPos.y - yPos;
 				snapTween.t = 1;
 				for(auto &cell : cells) {
 					cell->capture = false;
@@ -61,16 +61,20 @@ void Workspaces::update(double delta) {
 			}
 		} else {
 			if(xInteract.isActive()) {
-				setOrigin(vec3_up * (refPos.y - startYPos));
+				yPos = refPos.y - startYPos;
+				setOrigin(vec3_up * yPos);
 			} else {
 				if(snapTween.t != snapTween.d) {
-					setOrigin(vec3_up * snapTween.update(delta));
+					yPos = snapTween.update(delta);
+					setOrigin(vec3_up * yPos);
 					if(snapTween.t + delta > snapTween.d) {
 						for(auto &cell : cells) {
 							cell->capture = true;
 							cell->recapture();
 						}
 					}
+				} else {
+
 				}
 			}
 		}

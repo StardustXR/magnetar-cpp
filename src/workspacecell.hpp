@@ -10,7 +10,6 @@
 #include <stardustxr/fusion/types/drawable/model.hpp>
 #include <stardustxr/fusion/types/spatial/zone.hpp>
 
-#include "tween.hpp"
 #include "xinteract.hpp"
 
 class WorkspaceCell : public StardustXRFusion::Spatial {
