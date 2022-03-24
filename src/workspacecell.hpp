@@ -10,11 +10,9 @@
 #include <stardustxr/fusion/types/drawable/model.hpp>
 #include <stardustxr/fusion/types/spatial/zone.hpp>
 
-#include "xinteract.hpp"
-
 class WorkspaceCell : public StardustXRFusion::Spatial {
 public:
-	WorkspaceCell(StardustXRFusion::Spatial *parent, SKMath::vec3 pos);
+	WorkspaceCell(StardustXRFusion::Spatial *parent, SKMath::vec3 pos, float radius);
 
 	bool capture = true;
 	void recapture();
@@ -25,9 +23,6 @@ protected:
 	StardustXRFusion::Model cell;
 	StardustXRFusion::Model divider1;
 	StardustXRFusion::Model divider2;
-
-	bool handInput(const StardustXRFusion::HandInput &hand, const StardustXRFusion::Datamap &datamap);
-	// bool pointerInput(const StardustXRFusion::PointerInput &hand, const StardustXRFusion::Datamap &datamap);
 
 	std::map<std::string, Spatial> spatials;
 };

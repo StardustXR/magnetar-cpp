@@ -1,6 +1,6 @@
 files += files(
-	'workspacecell.cpp',
-	'workspaces.cpp',
-	'xinteract.cpp',
-	'main.cpp',
+    'singleactoraction.cpp',
+    'workspacecell.cpp',
+    'workspaces.cpp',
+    'main.cpp',
 )

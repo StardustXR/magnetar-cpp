@@ -12,8 +12,7 @@ double elapsedTime = 0;
 int main(int, char *[]) {
 	StardustXRFusion::Setup();
 
-	Spatial root = Spatial::create(nullptr);
-	Workspaces workspaces(&root, vec3_zero, 3);
+	Workspaces workspaces(Root(), vec3_zero, 3, 1);
 
 	OnLogicStep([&](double delta, double) {
 		elapsedTime += delta;
