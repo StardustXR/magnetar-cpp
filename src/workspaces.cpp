@@ -12,7 +12,7 @@ using namespace StardustXRFusion;
 using namespace SKMath;
 
 Workspaces::Workspaces(Spatial *parent, SKMath::vec3 pos, uint cellCount, float radius) :
-	Spatial(Spatial::create(parent, pos, quat_identity, vec3_one, true, true, false, false)),
+	Spatial(parent, pos, quat_identity, vec3_one, true, true, false, false),
 	field(this, -vec3_up * (cellCount - 1) / 2, quat_from_angles(90, 0, 0), cellCount, radius),
 	input(parent, field, vec3_zero, quat_identity),
 	radius(radius),
@@ -51,22 +51,17 @@ void Workspaces::update(double delta) {
 	input.update();
 	if(grabAction.actorActing) {
 		float inputY = oldInputY;
-		if(grabAction.actor->hand.get()) {
+		if(grabAction.actor->hand.get())
 			inputY = grabAction.actor->hand->palm.pose.position.y;
-		}
 		if(grabAction.actorStarted || grabAction.actorChanged) {
 			oldInputY = inputY;
+			for(auto &cell : cells)
+				cell->capture = false;
 			return;
 		}
 		yPos += inputY - oldInputY;
-	setOrigin(vec3_up * yPos);
+		setOrigin(vec3_up * yPos);
 		oldInputY = inputY;
-
-		if(grabAction.actorStarted) {
-			for(auto &cell : cells) {
-				cell->capture = false;
-			}
-		};
 	} else {
 		if(grabAction.actorStopped) {
 			snapTween.start = yPos;

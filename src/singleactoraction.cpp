@@ -6,14 +6,17 @@ void SingleActorAction::update() {
 	InputActionHandler::Action::update();
 
 	if(startedActing.size() > 0) {
-		if(actorActing)
-			actorChanged = true;
-		else
-			actorStarted = true;
-		actorActing = true;
-		actor = (startedActing.end()-1).base();
-		actorUUID = actor->uuid;
-		return;
+		auto newActor = startedActing.end()-1;
+		if(newActor->uuid != actorUUID) {
+			if(!actorActing)
+				actorStarted = true;
+			else
+				actorChanged = true;
+			actorActing = true;
+			actor = newActor.base();
+			actorUUID = actor->uuid;
+			return;
+		}
 	}
 
 	if(!actorActing && actor)

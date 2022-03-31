@@ -5,7 +5,7 @@ using namespace StardustXRFusion;
 using namespace SKMath;
 
 WorkspaceCell::WorkspaceCell(Spatial *parent, SKMath::vec3 pos, float radius) :
-	Spatial(Spatial::create(parent, pos, quat_identity, vec3_one, true, true, false, false)),
+	Spatial(parent, pos, quat_identity, vec3_one, true, true, false, false),
 	field(this, vec3_zero, quat_from_angles(90, 0, 0), 1, radius),
 	zone(this, field),
 	cell(this, "../res/cell.glb", vec3_zero, quat_identity, {radius, 1, radius}),
@@ -22,7 +22,6 @@ WorkspaceCell::WorkspaceCell(Spatial *parent, SKMath::vec3 pos, float radius) :
 }
 
 void WorkspaceCell::recapture() {
-	for(auto spatialPair : spatials) {
+	for(auto spatialPair : spatials)
 		zone.capture(spatialPair.second);
-	}
 }
