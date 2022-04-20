@@ -15,26 +15,35 @@ Workspaces::Workspaces(Spatial *parent, SKMath::vec3 pos, uint cellCount, float 
 	Spatial(parent, pos, quat_identity, vec3_one, true, true, false, false),
 	field(this, -vec3_up * (cellCount - 1) / 2, quat_from_angles(90, 0, 0), cellCount, radius),
 	input(parent, field, vec3_zero, quat_identity),
+	inRangeAction(false, true),
+	grabAction(true, true, &inRangeAction),
 	radius(radius),
-	yPos(pos.y) {
+	yPos(pos.y),
+	snapTween(0.25f, 0, 0, TweenEaseOutCirc) {
 
 	this->cellCount = cellCount;
 	for(uint i=0; i<cellCount; ++i) {
 		cells.emplace_back(new WorkspaceCell(this, pos + (-vec3_up * i), radius));
 	}
 
-	grabAction.captureOnTrigger = true;
-	grabAction.handActiveCondition = std::bind(&Workspaces::handInput, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+	inRangeAction.handActiveCondition = [](const std::string uuid, const HandInput &hand, const Datamap &datamap)          { return hand.distance < 0; };
+	inRangeAction.pointerActiveCondition = [](const std::string uuid, const PointerInput &pointer, const Datamap &datamap) { return pointer.distance < 0; };
+	input.actions.push_back(&inRangeAction);
+
+	grabAction.handActiveCondition = [](const std::string uuid, const HandInput &hand, const Datamap &datamap) {
+		float grabStrength = datamap.getFloat("grabStrength");
+		return grabStrength > 0.9f;
+	};
 	input.actions.push_back(&grabAction);
 }
 
-bool Workspaces::handInput(const std::string uuid, const HandInput &hand, const Datamap &datamap) {
-	float grabStrength = datamap.getFloat("grabStrength");
-	if(grabStrength < 0.9f)
-		return false;
+//bool Workspaces::handInput(const std::string uuid, const HandInput &hand, const Datamap &datamap) {
+//	float grabStrength = datamap.getFloat("grabStrength");
+//	if(grabStrength < 0.9f)
+//		return false;
 
-	if(hand.distance >= 0)
-		return false;
+//	if(hand.distance >= 0)
+//		return false;
 
 //	vec3 handPos = hand.palm.pose.position;
 //	float handHeight = std::abs(handPos.y - yPos - 0.5f);
@@ -44,8 +53,8 @@ bool Workspaces::handInput(const std::string uuid, const HandInput &hand, const 
 //	if(vec3_magnitude_sq(handPos) > std::pow(radius, 2))
 //		return false;
 
-	return true;
-}
+//	return true;
+//}
 
 void Workspaces::update(double delta) {
 	input.update();

@@ -18,5 +18,5 @@ int main(int, char *[]) {
 		elapsedTime += delta;
 		workspaces.update(delta);
 	});
-	StardustXRFusion::StallMainThread();
+	StardustXRFusion::RunEventLoop();
 }

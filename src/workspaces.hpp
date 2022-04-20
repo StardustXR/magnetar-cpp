@@ -8,9 +8,10 @@
 #include <stardustxr/fusion/types/fields/cylinderfield.hpp>
 #include <stardustxr/fusion/types/input/datamap.hpp>
 #include <stardustxr/fusion/types/input/types/handinput.hpp>
+#include <stardustxr/fusion/types/input/inputactionhandler.hpp>
+#include <stardustxr/fusion/types/input/actions/singleactor.hpp>
 #include <stardustxr/fusion/util/tween.hpp>
 
-#include "singleactoraction.hpp"
 #include "workspacecell.hpp"
 
 class Workspaces : public StardustXRFusion::Spatial {
@@ -25,15 +26,16 @@ protected:
 	std::vector<std::unique_ptr<WorkspaceCell>> cells;
 	uint cellCount;
 
-	bool handInput(const std::string uuid, const StardustXRFusion::HandInput &hand, const StardustXRFusion::Datamap &datamap);
+//	bool handInput(const std::string uuid, const StardustXRFusion::HandInput &hand, const StardustXRFusion::Datamap &datamap);
 	// bool pointerInput(const StardustXRFusion::PointerInput &hand, const StardustXRFusion::Datamap &datamap);
-	SingleActorAction grabAction;
+	StardustXRFusion::SingleActorAction inRangeAction;
+	StardustXRFusion::SingleActorAction grabAction;
 
 	float radius;
 	float yPos;
 	float snapStart;
 	float snapTarget;
-	StardustXRFusion::Tween<float> snapTween = {0.25f, 0.25f, 0, 0, StardustXRFusion::TweenEaseOutCirc};
+	StardustXRFusion::Tween<float> snapTween;
 
 	float oldInputY;
 };
