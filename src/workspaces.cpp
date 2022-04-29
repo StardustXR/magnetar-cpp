@@ -3,18 +3,15 @@
 #include <cmath>
 #include <functional>
 #include <memory>
-#include <stardustxr/fusion/fusion.hpp>
-#include <stardustxr/fusion/sk_math.hpp>
-#include <stardustxr/fusion/types/input/types/handinput.hpp>
 #include <string>
+#include <stardustxr/fusion/types/input/types/handinput.hpp>
 
 using namespace StardustXRFusion;
-using namespace SKMath;
 
-Workspaces::Workspaces(Spatial *parent, SKMath::vec3 pos, uint cellCount, float radius) :
-	Spatial(parent, pos, quat_identity, vec3_one, true, true, false, false),
-	field(this, -vec3_up * (cellCount - 1) / 2, quat_from_angles(90, 0, 0), cellCount, radius),
-	input(parent, field, vec3_zero, quat_identity),
+Workspaces::Workspaces(Spatial *parent, StardustXRFusion::Vec3 pos, uint cellCount, float radius) :
+	Spatial(parent, pos, Quat::Identity, Vec3::One, true, true, false, false),
+	field(this, -Vec3::Up * (cellCount - 1) / 2, glm::quat(glm::radians(glm::vec3(90, 0, 0))), cellCount, radius),
+	input(parent, field, Vec3::Zero, Quat::Identity),
 	inRangeAction(false, true),
 	grabAction(true, true, &inRangeAction),
 	radius(radius),
@@ -23,7 +20,7 @@ Workspaces::Workspaces(Spatial *parent, SKMath::vec3 pos, uint cellCount, float 
 
 	this->cellCount = cellCount;
 	for(uint i=0; i<cellCount; ++i) {
-		cells.emplace_back(new WorkspaceCell(this, pos + (-vec3_up * i), radius));
+		cells.emplace_back(new WorkspaceCell(this, pos + (-Vec3::Up * i), radius));
 	}
 
 	inRangeAction.handActiveCondition = [](const std::string uuid, const HandInput &hand, const Datamap &datamap)          { return hand.distance < 0; };
@@ -69,7 +66,7 @@ void Workspaces::update(double delta) {
 			return;
 		}
 		yPos += inputY - oldInputY;
-		setOrigin(vec3_up * yPos);
+		setOrigin(Vec3::Up * yPos);
 		oldInputY = inputY;
 	} else {
 		if(grabAction.actorStopped) {
@@ -80,7 +77,7 @@ void Workspaces::update(double delta) {
 
 		if(snapTween.t != snapTween.d) {
 			yPos = snapTween.update(delta);
-			setOrigin(vec3_up * yPos);
+			setOrigin(Vec3::Up * yPos);
 			if(snapTween.t + delta > snapTween.d) {
 				for(auto &cell : cells) {
 					cell->capture = true;

@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 
-#include <stardustxr/fusion/sk_math.hpp>
+#include <stardustxr/fusion/values/glm.hpp>
 #include <stardustxr/fusion/types/drawable/model.hpp>
 #include <stardustxr/fusion/types/fields/cylinderfield.hpp>
 #include <stardustxr/fusion/types/input/datamap.hpp>
@@ -16,7 +16,7 @@
 
 class Workspaces : public StardustXRFusion::Spatial {
 public:
-	Workspaces(StardustXRFusion::Spatial *parent, SKMath::vec3 pos, uint cellCount, float radius);
+	Workspaces(StardustXRFusion::Spatial *parent, StardustXRFusion::Vec3 pos, uint cellCount, float radius);
 
 	void update(double delta);
 

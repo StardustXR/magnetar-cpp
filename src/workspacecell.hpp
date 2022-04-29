@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include <stardustxr/fusion/sk_math.hpp>
+#include <stardustxr/fusion/values/glm.hpp>
 #include <stardustxr/fusion/types/fields/cylinderfield.hpp>
 #include <stardustxr/fusion/types/input/datamap.hpp>
 #include <stardustxr/fusion/types/input/inputhandler.hpp>
@@ -12,7 +12,7 @@
 
 class WorkspaceCell : public StardustXRFusion::Spatial {
 public:
-	WorkspaceCell(StardustXRFusion::Spatial *parent, SKMath::vec3 pos, float radius);
+	WorkspaceCell(StardustXRFusion::Spatial *parent, StardustXRFusion::Vec3 pos, float radius);
 
 	bool capture = true;
 	void recapture();
